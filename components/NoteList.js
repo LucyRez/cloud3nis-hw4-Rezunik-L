@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { connect, useSelector } from "react-redux";
+
 import {
   StyleSheet,
   Text,
@@ -12,16 +14,7 @@ import Note from "./Note";
 const NoteList = ({ navigation, route }) => {
   const [noteItems, setNoteItems] = useState([]);
 
-  const handleAddNote = (note, id, title, image) => {
-    let newNote = {
-      id: id,
-      text: note,
-      title: title,
-      image: image,
-      time: new Date().toLocaleString(),
-    };
-    setNoteItems([...noteItems, newNote]);
-  };
+  const notes = useSelector((state) => state.notes);
 
   const handleEditNote = (note, id, title, image) => {
     let editedNote = {
@@ -39,36 +32,13 @@ const NoteList = ({ navigation, route }) => {
     setNoteItems(newNotes);
   };
 
-  const removeNote = (id) => {
-    const removeArr = [...noteItems].filter((note) => note.id !== id);
-    setNoteItems(removeArr);
-  };
-
-  React.useEffect(() => {
-    if (route.params?.note || route.params?.title || route.params?.image) {
-      if (route.params?.edit) {
-        handleEditNote(
-          route.params?.note,
-          route.params?.id,
-          route.params?.title,
-          route.params?.image
-        );
-      } else {
-        handleAddNote(
-          route.params?.note,
-          route.params?.id,
-          route.params?.title,
-          route.params?.image
-        );
-      }
-    }
-  }, [route.params?.note, route.params?.title, route.params?.image]);
+  React.useEffect(() => {}, []);
 
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.notesContainer}>
-          {noteItems.map((item, index) => {
+          {notes?.map((item, index) => {
             return (
               <TouchableOpacity
                 key={index}
@@ -78,7 +48,7 @@ const NoteList = ({ navigation, route }) => {
                   })
                 }
               >
-                <Note text={item.text} title={item.title}></Note>
+                <Note id={item.id} text={item.text} title={item.title}></Note>
               </TouchableOpacity>
             );
           })}
@@ -108,6 +78,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
   },
+  note: {
+    position: "relative",
+    justifyContent: "center",
+  },
+  deleteIcon: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    marginRight: 15,
+    marginVertical: 10,
+    paddingVertical: 5,
+    paddingLeft: 5,
+    paddingRight: 10,
+    zIndex: 1,
+  },
   buttonWrapper: {
     zIndex: 1,
     paddingBottom: 30,
@@ -129,5 +113,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
 });
+
+const mapStateToProps = (state) => {
+  return {
+    notes: state,
+  };
+};
 
 export default NoteList;

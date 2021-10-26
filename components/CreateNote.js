@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { createNote } from "../redux/actions";
+import store from "../redux/store";
+
 import {
   View,
   Text,
@@ -10,6 +13,7 @@ import {
   KeyboardAvoidingView,
   Button,
   Image,
+  Platform,
 } from "react-native";
 import nextId from "react-id-generator";
 import * as ImagePicker from "expo-image-picker";
@@ -49,6 +53,10 @@ const CreateNote = ({ route, navigation }) => {
     }
   };
 
+  const addNote = () => {
+    store.dispatch(createNote(nextId(), note, title, image));
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -62,16 +70,9 @@ const CreateNote = ({ route, navigation }) => {
 
             <TouchableOpacity
               onPress={() => {
+                addNote();
                 navigation.navigate({
                   name: "Home",
-                  params: {
-                    note: note,
-                    id: nextId(),
-                    title: title,
-                    image: image,
-                    edit: false,
-                  },
-                  merge: true,
                 });
               }}
             >
@@ -106,7 +107,13 @@ const CreateNote = ({ route, navigation }) => {
           <Button title="Pick an image" onPress={pickImage} />
 
           <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            behavior={
+              Platform.OS === "ios"
+                ? "padding"
+                : Platform.OS !== "web"
+                ? "height"
+                : "position"
+            }
           >
             <TextInput
               style={styles.noteInput}
