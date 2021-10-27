@@ -34,3 +34,27 @@ export function deleteNote(id) {
     },
   };
 }
+
+export function fetchNotes() {
+  return {
+    type: actions.FETCH_NOTES,
+  };
+}
+
+export const fetchNotesSuccess = (notes) => ({
+  type: actions.FETCH_NOTES_SUCCESS,
+  payload: { notes },
+});
+
+export function submitNote(id, note, title, image) {
+  return {
+    type: actions.SUBMIT_NOTE,
+    payload: {
+      id: id,
+      text: note,
+      title: title,
+      image: image,
+      time: new Date().toLocaleString(),
+    },
+  };
+}

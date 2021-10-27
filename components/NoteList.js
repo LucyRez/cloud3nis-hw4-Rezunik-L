@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { connect, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchNotes } from "../redux/actions";
 
 import {
   StyleSheet,
@@ -15,6 +16,8 @@ const NoteList = ({ navigation, route }) => {
   const [noteItems, setNoteItems] = useState([]);
 
   const notes = useSelector((state) => state.notes);
+  const isLoaded = useSelector((state) => state.isLoaded);
+  const dispatch = useDispatch();
 
   const handleEditNote = (note, id, title, image) => {
     let editedNote = {
@@ -32,7 +35,11 @@ const NoteList = ({ navigation, route }) => {
     setNoteItems(newNotes);
   };
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {
+    if (!isLoaded) {
+      dispatch(fetchNotes());
+    }
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -57,6 +57,10 @@ const CreateNote = ({ route, navigation }) => {
     store.dispatch(createNote(nextId(), note, title, image));
   };
 
+  const submitNote = () => {
+    store.dispatch(submitNote(nextId(), note, title, image));
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
