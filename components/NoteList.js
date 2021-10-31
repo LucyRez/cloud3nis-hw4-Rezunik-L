@@ -13,27 +13,9 @@ import {
 import Note from "./Note";
 
 const NoteList = ({ navigation, route }) => {
-  const [noteItems, setNoteItems] = useState([]);
-
   const notes = useSelector((state) => state.notes);
   const isLoaded = useSelector((state) => state.isLoaded);
   const dispatch = useDispatch();
-
-  const handleEditNote = (note, id, title, image) => {
-    let editedNote = {
-      id: id,
-      text: note,
-      title: title,
-      image: image,
-      time: new Date().toLocaleString(),
-    };
-
-    const index = noteItems.findIndex((item) => item.id === editedNote.id);
-
-    const newNotes = [...noteItems];
-    newNotes[index] = editedNote;
-    setNoteItems(newNotes);
-  };
 
   React.useEffect(() => {
     if (!isLoaded) {

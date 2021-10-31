@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { editNote, updateNote } from "../redux/actions";
 import store from "../redux/store";
-
 import {
   View,
   Text,
@@ -14,6 +13,7 @@ import {
   Image,
   ScrollView,
 } from "react-native";
+
 import * as ImagePicker from "expo-image-picker";
 
 const EditNote = ({ route, navigation }) => {

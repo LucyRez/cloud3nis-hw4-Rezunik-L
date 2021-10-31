@@ -42,9 +42,6 @@ const reducer = (state = initialState, action) => {
         notes: state.notes.filter((note) => note.id !== action.payload.id),
       };
     case actions.FETCH_NOTES_SUCCESS:
-      console.log(action.payload.notes);
-      const { notesFetched } = action.payload;
-
       return {
         ...state,
         notes: action.payload.notes,

@@ -9,7 +9,8 @@ function* fetchNotesSaga() {
     const notes = res.data;
 
     console.log("Json " + notes);
-    yield put(fetchNotesSuccess(notes));
+
+    yield put(fetchNotesSuccess(notes === undefined ? [] : notes));
   } catch (error) {
     console.log(error);
   }
@@ -19,9 +20,6 @@ function* submitNoteSaga(action) {
   try {
     const tmp_note = JSON.stringify(action.payload);
     const res = yield api.submitNote(tmp_note);
-    const notes = res.data;
-
-    console.log("Json " + notes);
   } catch (error) {
     console.log(error);
   }
@@ -32,9 +30,6 @@ function* updateNoteSaga(action) {
     const tmp_note = JSON.stringify(action.payload);
     console.log(action.payload.id);
     const res = yield api.updateNote(action.payload.id, tmp_note);
-    const notes = res.data;
-
-    console.log("Json " + notes);
   } catch (error) {
     console.log(error);
   }
@@ -44,9 +39,6 @@ function* removeNoteSaga(action) {
   try {
     console.log(action.payload.id);
     const res = yield api.removeNote(action.payload.id);
-    const notes = res.data;
-
-    console.log("Json " + notes);
   } catch (error) {
     console.log(error);
   }

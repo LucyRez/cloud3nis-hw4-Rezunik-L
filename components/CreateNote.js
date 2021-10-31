@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { createNote, submitNote } from "../redux/actions";
 import store from "../redux/store";
-
 import {
   View,
   Text,
@@ -15,6 +14,7 @@ import {
   Image,
   Platform,
 } from "react-native";
+
 import uuid from "uuid";
 import * as ImagePicker from "expo-image-picker";
 
