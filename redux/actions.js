@@ -26,9 +26,31 @@ export function editNote(id, note, title, image) {
   };
 }
 
+export function updateNote(id, note, title, image) {
+  return {
+    type: actions.UPDATE_NOTE,
+    payload: {
+      id: id,
+      text: note,
+      title: title,
+      image: image,
+      time: new Date().toLocaleString(),
+    },
+  };
+}
+
 export function deleteNote(id) {
   return {
     type: actions.DELETE_NOTE,
+    payload: {
+      id: id,
+    },
+  };
+}
+
+export function deleteFromServer(id) {
+  return {
+    type: actions.REMOVE_NOTE,
     payload: {
       id: id,
     },

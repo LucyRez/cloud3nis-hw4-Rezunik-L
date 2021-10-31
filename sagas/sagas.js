@@ -1,10 +1,9 @@
-import { takeEvery, put, call } from "redux-saga/effects";
+import { takeEvery, put, all } from "redux-saga/effects";
 import * as api from "../api/client/client-api";
 import * as actions from "../redux/actionTypes";
-import { fetchNotes, fetchNotesSuccess } from "../redux/actions";
-import { fork } from "redux-saga/effects";
+import { fetchNotesSuccess } from "../redux/actions";
 
-export function* fetchNotesSaga() {
+function* fetchNotesSaga() {
   try {
     const res = yield api.getNotes();
     const notes = res.data;
@@ -16,10 +15,59 @@ export function* fetchNotesSaga() {
   }
 }
 
-export function* fetchSaga() {
+function* submitNoteSaga(action) {
+  try {
+    const tmp_note = JSON.stringify(action.payload);
+    const res = yield api.submitNote(tmp_note);
+    const notes = res.data;
+
+    console.log("Json " + notes);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* updateNoteSaga(action) {
+  try {
+    const tmp_note = JSON.stringify(action.payload);
+    console.log(action.payload.id);
+    const res = yield api.updateNote(action.payload.id, tmp_note);
+    const notes = res.data;
+
+    console.log("Json " + notes);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* removeNoteSaga(action) {
+  try {
+    console.log(action.payload.id);
+    const res = yield api.removeNote(action.payload.id);
+    const notes = res.data;
+
+    console.log("Json " + notes);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* fetchSaga() {
   yield takeEvery(actions.FETCH_NOTES, fetchNotesSaga);
 }
 
-// export default function* rootSaga() {
-//   yield fork(fetchSaga);
-// }
+function* submitSaga() {
+  yield takeEvery(actions.SUBMIT_NOTE, submitNoteSaga);
+}
+
+function* updateSaga() {
+  yield takeEvery(actions.UPDATE_NOTE, updateNoteSaga);
+}
+
+function* removeSaga() {
+  yield takeEvery(actions.REMOVE_NOTE, removeNoteSaga);
+}
+
+export function* rootSaga() {
+  yield all([fetchSaga(), submitSaga(), updateSaga(), removeSaga()]);
+}

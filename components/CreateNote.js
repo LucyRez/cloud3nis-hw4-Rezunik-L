@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createNote } from "../redux/actions";
+import { createNote, submitNote } from "../redux/actions";
 import store from "../redux/store";
 
 import {
@@ -15,7 +15,7 @@ import {
   Image,
   Platform,
 } from "react-native";
-import nextId from "react-id-generator";
+import uuid from "uuid";
 import * as ImagePicker from "expo-image-picker";
 
 const CreateNote = ({ route, navigation }) => {
@@ -53,12 +53,12 @@ const CreateNote = ({ route, navigation }) => {
     }
   };
 
-  const addNote = () => {
-    store.dispatch(createNote(nextId(), note, title, image));
+  const addNote = (id) => {
+    store.dispatch(createNote(id, note, title, image));
   };
 
-  const submitNote = () => {
-    store.dispatch(submitNote(nextId(), note, title, image));
+  const submit = (id) => {
+    store.dispatch(submitNote(id, note, title, image));
   };
 
   return (
@@ -74,7 +74,9 @@ const CreateNote = ({ route, navigation }) => {
 
             <TouchableOpacity
               onPress={() => {
-                addNote();
+                let tmp_id = uuid.v4();
+                addNote(tmp_id);
+                submit(tmp_id);
                 navigation.navigate({
                   name: "Home",
                 });

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { editNote } from "../redux/actions";
+import { editNote, updateNote } from "../redux/actions";
 import store from "../redux/store";
 
 import {
@@ -48,6 +48,10 @@ const EditNote = ({ route, navigation }) => {
     store.dispatch(editNote(route.params.item.id, note, title, image));
   };
 
+  const update = () => {
+    store.dispatch(updateNote(route.params.item.id, note, title, image));
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -62,6 +66,7 @@ const EditNote = ({ route, navigation }) => {
             <TouchableOpacity
               onPress={() => {
                 edit();
+                update();
                 navigation.navigate({
                   name: "Home",
                 });

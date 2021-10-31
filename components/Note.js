@@ -3,10 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
 import store from "../redux/store";
-import { deleteNote } from "../redux/actions";
+import { deleteNote, deleteFromServer } from "../redux/actions";
 
 const Note = (props) => {
   const removeNote = () => {
+    store.dispatch(deleteFromServer(props.id));
     store.dispatch(deleteNote(props.id));
   };
 
